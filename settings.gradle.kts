@@ -21,4 +21,4 @@ dependencyResolutionManagement {
 
 rootProject.name = "trendgit"
 include(":app")
- 
+include(":common:network")
