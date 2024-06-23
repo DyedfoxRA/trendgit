@@ -11,19 +11,33 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.platform.LocalContext
 
 private val DarkColorScheme = darkColorScheme(
-    primary = Purple80,
-    secondary = PurpleGrey80,
-    tertiary = Pink80
+    primary = DarkBlue,
+    secondary = DarkGray,
+    tertiary = Pink80,
+    background = DarkBackground,
+    surface = DarkSurface,
+    onPrimary = DarkOnPrimary,
+    onSecondary = LightGray,
+    onTertiary = LightGray,
+    onBackground = LightGray,
+    onSurface = LightGray
 )
 
 private val LightColorScheme = lightColorScheme(
-    primary = Purple40,
-    secondary = PurpleGrey40,
-    tertiary = Pink40
+    primary = Blue,
+    secondary = Gray,
+    tertiary = Pink40,
+    background = LightBackground,
+    surface = LightSurface,
+    onPrimary = LightOnPrimary,
+    onSecondary = DarkGray,
+    onTertiary = DarkGray,
+    onBackground = DarkGray,
+    onSurface = DarkGray
 )
 
 @Composable
-fun TrendgitTheme(
+fun TrendGitTheme(
     darkTheme: Boolean = isSystemInDarkTheme(),
     dynamicColor: Boolean = true,
     content: @Composable () -> Unit
