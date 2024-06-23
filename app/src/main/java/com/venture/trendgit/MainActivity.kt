@@ -4,23 +4,24 @@ import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
-import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
-import androidx.compose.material3.Button
+import androidx.compose.material3.Icon
+import androidx.compose.material3.NavigationBar
+import androidx.compose.material3.NavigationBarItem
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.tooling.preview.Preview
-import com.venture.settings.ui.SettingsScreen
+import androidx.navigation.NavController
+import androidx.navigation.compose.currentBackStackEntryAsState
+import androidx.navigation.compose.rememberNavController
 import com.venture.settings.ui.ThemeViewModel
-import com.venture.trendgit.ui.theme.TrendgitTheme
+import com.venture.trendgit.navigation.BottomNavItem
+import com.venture.trendgit.navigation.NavGraph
+import com.venture.trendgit.ui.theme.TrendGitTheme
 import org.koin.androidx.compose.koinViewModel
 
 class MainActivity : ComponentActivity() {
@@ -30,14 +31,15 @@ class MainActivity : ComponentActivity() {
         setContent {
             val themeViewModel: ThemeViewModel = koinViewModel()
             val isDarkTheme by themeViewModel.isDarkTheme.collectAsState()
+            val navController = rememberNavController()
 
-            TrendgitTheme(darkTheme = isDarkTheme) {
+            TrendGitTheme(darkTheme = isDarkTheme) {
                 Scaffold(
                     modifier = Modifier.fillMaxSize(),
-                    bottomBar = {
-
-                    }) { innerPadding ->
-                    MainContent(
+                    bottomBar = { BottomNavigationBar(navController) }
+                ) { innerPadding ->
+                    NavGraph(
+                        navController = navController,
                         modifier = Modifier.padding(innerPadding)
                     )
                 }
@@ -47,33 +49,27 @@ class MainActivity : ComponentActivity() {
 }
 
 @Composable
-fun MainContent(modifier: Modifier = Modifier) {
-    var showSettings by remember { mutableStateOf(false) }
+fun BottomNavigationBar(navController: NavController) {
+    val items = BottomNavItem.values()
+    NavigationBar {
+        val navBackStackEntry by navController.currentBackStackEntryAsState()
+        val currentRoute = navBackStackEntry?.destination?.route
 
-    if (showSettings) {
-        SettingsScreen()
-    } else {
-        Column(modifier = modifier) {
-            Greeting(name = "Android")
-            Button(onClick = { showSettings = true }) {
-                Text(text = "Open Settings")
-            }
+        items.forEach { item ->
+            NavigationBarItem(
+                icon = { Icon(item.icon, contentDescription = item.label) },
+                label = { Text(item.label) },
+                selected = currentRoute == item.route,
+                onClick = {
+                    navController.navigate(item.route) {
+                        navController.graph.startDestinationRoute?.let { route ->
+                            popUpTo(route) { saveState = true }
+                        }
+                        launchSingleTop = true
+                        restoreState = true
+                    }
+                }
+            )
         }
-    }
-}
-
-@Composable
-fun Greeting(name: String, modifier: Modifier = Modifier) {
-    Text(
-        text = "Hello $name!",
-        modifier = modifier
-    )
-}
-
-@Preview(showBackground = true)
-@Composable
-fun GreetingPreview() {
-    TrendgitTheme {
-        Greeting("Android")
     }
 }
