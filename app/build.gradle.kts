@@ -59,12 +59,16 @@ dependencies {
     implementation(libs.androidx.ui.graphics)
     implementation(libs.androidx.ui.tooling.preview)
     implementation(libs.androidx.material3)
+    implementation(libs.androidx.navigation.compose)
 
     implementation(libs.koin.core)
     implementation(libs.koin.androidx.compose)
     implementation(libs.koin.android)
 
     implementation(project(":common:network"))
+    implementation(project(":features:settings"))
+    implementation(project(":features:favorite_repos"))
+    implementation(project(":features:trend_repos"))
 
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
