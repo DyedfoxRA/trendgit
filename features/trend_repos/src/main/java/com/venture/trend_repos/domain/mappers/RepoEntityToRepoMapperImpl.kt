@@ -12,6 +12,9 @@ class RepoEntityToRepoMapperImpl : RepoEntityToRepoMapper {
             description = raw.description,
             htmlUrl = raw.htmlUrl,
             stargazersCount = raw.stargazersCount,
+            fullName = raw.fullName,
+            language = raw.language,
+            forksCount = raw.forksCount,
             owner = Owner(
                 login = raw.ownerEntity.login,
                 avatarUrl = raw.ownerEntity.avatarUrl
@@ -19,6 +22,5 @@ class RepoEntityToRepoMapperImpl : RepoEntityToRepoMapper {
         )
     }
 }
-
 
 interface RepoEntityToRepoMapper : Mapper<RepoEntity, Repo>

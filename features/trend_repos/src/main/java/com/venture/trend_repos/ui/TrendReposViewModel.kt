@@ -16,10 +16,28 @@ class TrendReposViewModel(
     private val _trendingRepos = MutableStateFlow<List<Repo>>(emptyList())
     val trendingRepos: StateFlow<List<Repo>> = _trendingRepos
 
-    fun fetchTrendingRepos(language: String, dateRange: DateRange) {
+    private val _language = MutableStateFlow("Any")
+    val language: StateFlow<String> = _language
+
+    private val _dateRange = MutableStateFlow(DateRange.WEEK)
+    val dateRange: StateFlow<DateRange> = _dateRange
+
+    init {
+        fetchTrendingRepos()
+    }
+    fun updateLanguage(newLanguage: String) {
+        _language.value = newLanguage
+    }
+
+    fun updateDateRange(newDateRange: DateRange) {
+        _dateRange.value = newDateRange
+        fetchTrendingRepos()
+    }
+
+    fun fetchTrendingRepos() {
         viewModelScope.launch {
             try {
-                val repos = repository.getTrendingRepos(language, dateRange)
+                val repos = repository.getTrendingRepos(_language.value, _dateRange.value)
                 _trendingRepos.value = repos
             } catch (e: Exception) {
                 // Handle other exceptions

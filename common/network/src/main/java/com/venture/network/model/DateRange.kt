@@ -4,7 +4,7 @@ import java.text.SimpleDateFormat
 import java.util.Calendar
 import java.util.Locale
 
-enum class DateRange() {
+enum class DateRange {
     TODAY,
     WEEK,
     MONTH;
