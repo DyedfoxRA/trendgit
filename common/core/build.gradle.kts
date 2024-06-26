@@ -4,7 +4,7 @@ plugins {
 }
 
 android {
-    namespace = "com.venture.trend_repos"
+    namespace = "com.venture.core"
     compileSdk = 34
 
     defaultConfig {
@@ -14,15 +14,6 @@ android {
         consumerProguardFiles("consumer-rules.pro")
     }
 
-    buildTypes {
-        release {
-            isMinifyEnabled = false
-            proguardFiles(
-                getDefaultProguardFile("proguard-android-optimize.txt"),
-                "proguard-rules.pro"
-            )
-        }
-    }
     compileOptions {
         sourceCompatibility = JavaVersion.VERSION_17
         targetCompatibility = JavaVersion.VERSION_17
@@ -41,30 +32,23 @@ android {
             excludes += "/META-INF/{AL2.0,LGPL2.1}"
         }
     }
+
+    buildFeatures {
+        buildConfig = true
+    }
 }
 
 dependencies {
 
     implementation(libs.androidx.core.ktx)
-    implementation(libs.androidx.lifecycle.runtime.ktx)
+    implementation(libs.material)
+    implementation(libs.koin.core)
+    implementation(libs.kotlinx.coroutines.core)
     implementation(libs.androidx.lifecycle.viewmodel.compose)
     implementation(libs.androidx.activity.compose)
     implementation(platform(libs.androidx.compose.bom))
-    implementation(libs.androidx.ui)
-    implementation(libs.androidx.ui.graphics)
-    implementation(libs.androidx.ui.tooling.preview)
-    implementation(libs.androidx.material3)
+    implementation(libs.androidx.animation.android)
 
-    implementation(libs.koin.core)
-    implementation(libs.koin.android)
-    implementation(libs.koin.androidx.compose)
-    implementation(libs.material)
-    implementation(libs.coil.compose)
-    implementation(libs.androidx.lifecycle.runtime.compose.android)
-    implementation(libs.retrofit)
-
-    implementation(project(":common:network"))
-    implementation(project(":common:core"))
 
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)

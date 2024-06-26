@@ -1,7 +1,10 @@
 package com.venture.trend_repos.ui
 
+
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.venture.core.domain.results.BaseError
+import com.venture.core.domain.results.ResultResponse
 import com.venture.network.model.DateRange
 import com.venture.trend_repos.domain.model.Repo
 import com.venture.trend_repos.domain.repos.SearchRepository
@@ -13,8 +16,9 @@ class TrendReposViewModel(
     private val repository: SearchRepository
 ) : ViewModel() {
 
-    private val _trendingRepos = MutableStateFlow<List<Repo>>(emptyList())
-    val trendingRepos: StateFlow<List<Repo>> = _trendingRepos
+    private val _trendingRepos =
+        MutableStateFlow<ResultResponse<List<Repo>, BaseError>>(ResultResponse.Idle)
+    val trendingRepos: StateFlow<ResultResponse<List<Repo>, BaseError>> = _trendingRepos
 
     private val _language = MutableStateFlow("Any")
     val language: StateFlow<String> = _language
@@ -25,6 +29,7 @@ class TrendReposViewModel(
     init {
         fetchTrendingRepos()
     }
+
     fun updateLanguage(newLanguage: String) {
         _language.value = newLanguage
     }
@@ -36,12 +41,8 @@ class TrendReposViewModel(
 
     fun fetchTrendingRepos() {
         viewModelScope.launch {
-            try {
-                val repos = repository.getTrendingRepos(_language.value, _dateRange.value)
-                _trendingRepos.value = repos
-            } catch (e: Exception) {
-                // Handle other exceptions
-                e.printStackTrace()
+            repository.getTrendingRepos(_language.value, _dateRange.value).collect { result ->
+                _trendingRepos.value = result
             }
         }
     }

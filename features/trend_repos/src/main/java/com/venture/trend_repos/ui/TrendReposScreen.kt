@@ -13,6 +13,8 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
+import androidx.compose.material3.Button
+import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.DropdownMenu
 import androidx.compose.material3.DropdownMenuItem
 import androidx.compose.material3.MaterialTheme
@@ -31,12 +33,15 @@ import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import com.venture.core.domain.results.BaseError
+import com.venture.core.domain.results.DataError
+import com.venture.core.ui.DisplayResult
 import com.venture.network.model.DateRange
 import org.koin.androidx.compose.koinViewModel
 
 @Composable
 fun TrendReposScreen(viewModel: TrendReposViewModel = koinViewModel()) {
-    val reposState = viewModel.trendingRepos.collectAsState()
+    val reposState by viewModel.trendingRepos.collectAsState()
 
     val language by viewModel.language.collectAsStateWithLifecycle()
     val dateRange by viewModel.dateRange.collectAsStateWithLifecycle()
@@ -93,16 +98,72 @@ fun TrendReposScreen(viewModel: TrendReposViewModel = koinViewModel()) {
                 }
             }
         }
-        LazyColumn {
-            items(reposState.value.size) { index ->
-                RepoItem(repo = reposState.value[index]) {
-                    //on click(
+        reposState.DisplayResult(
+            onIdle = { /* Do nothing */ },
+            onLoading = {
+                Box(
+                    modifier = Modifier.fillMaxSize(),
+                    contentAlignment = Alignment.Center
+                ) {
+                    CircularProgressIndicator()
                 }
+            },
+            onSuccess = { repos ->
+                if (repos.isEmpty()) {
+                    EmptyState()
+                } else {
+                    LazyColumn {
+                        items(repos.size) { index ->
+                            RepoItem(repo = repos[index]) {
+                                // Handle repo item click
+                            }
+                        }
+                    }
+                }
+            },
+            onError = { error ->
+                ErrorState(error, viewModel)
+            }
+        )
+    }
+}
+
+@Composable
+fun EmptyState() {
+    Column(
+        modifier = Modifier.fillMaxSize(),
+        verticalArrangement = Arrangement.Center,
+        horizontalAlignment = Alignment.CenterHorizontally
+    ) {
+        Text(text = "No repositories found")
+    }
+}
+
+@Composable
+fun ErrorState(error: BaseError?, viewModel: TrendReposViewModel) {
+    Column(
+        modifier = Modifier.fillMaxSize(),
+        verticalArrangement = Arrangement.Center,
+        horizontalAlignment = Alignment.CenterHorizontally
+    ) {
+        Text(
+            text = "Error: ${error?.javaClass?.simpleName}",
+            color = MaterialTheme.colorScheme.error
+        )
+        Spacer(modifier = Modifier.height(16.dp))
+        if (error is DataError.Network) {
+            Button(onClick = {
+                viewModel.fetchTrendingRepos()
+            }) {
+                Text(text = "Retry")
+            }
+        } else {
+            Button(onClick = { /* add logic */ }) {
+                Text(text = "Back")
             }
         }
     }
 }
-
 
 @Preview(showBackground = true)
 @Composable
