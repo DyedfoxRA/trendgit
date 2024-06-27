@@ -27,9 +27,8 @@ class TrendReposViewModelTest {
 
     private val testDispatcher = UnconfinedTestDispatcher()
 
-    private val repository: SearchRepository = mockk()
+    private val repository: SearchRepository = mockk(relaxed = true)
     private lateinit var viewModel: TrendReposViewModel
-
 
     @BeforeEach
     fun setUp() {
