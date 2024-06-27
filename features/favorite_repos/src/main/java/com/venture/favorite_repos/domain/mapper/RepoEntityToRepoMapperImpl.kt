@@ -1,6 +1,7 @@
-package com.venture.trend_repos.domain.mappers
+package com.venture.favorite_repos.domain.mapper
 
-import com.venture.network.model.RepoEntity
+import com.venture.favorite_repos.data.model.RepoEntity
+import com.venture.trend_repos.domain.mappers.Mapper
 import com.venture.trend_repos.domain.model.Owner
 import com.venture.trend_repos.domain.model.Repo
 
@@ -16,8 +17,8 @@ class RepoEntityToRepoMapperImpl : RepoEntityToRepoMapper {
             language = raw.language,
             forksCount = raw.forksCount,
             owner = Owner(
-                login = raw.ownerEntity.login,
-                avatarUrl = raw.ownerEntity.avatarUrl
+                login = raw.owner.login,
+                avatarUrl = raw.owner.avatarUrl
             )
         )
     }

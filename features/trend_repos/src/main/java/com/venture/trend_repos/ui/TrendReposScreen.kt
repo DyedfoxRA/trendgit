@@ -22,7 +22,6 @@ import androidx.compose.material3.OutlinedButton
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -41,8 +40,7 @@ import org.koin.androidx.compose.koinViewModel
 
 @Composable
 fun TrendReposScreen(viewModel: TrendReposViewModel = koinViewModel()) {
-    val reposState by viewModel.trendingRepos.collectAsState()
-
+    val reposState by viewModel.trendingRepos.collectAsStateWithLifecycle()
     val language by viewModel.language.collectAsStateWithLifecycle()
     val dateRange by viewModel.dateRange.collectAsStateWithLifecycle()
     var expanded by remember { mutableStateOf(false) }
@@ -98,6 +96,7 @@ fun TrendReposScreen(viewModel: TrendReposViewModel = koinViewModel()) {
                 }
             }
         }
+
         reposState.DisplayResult(
             onIdle = { /* Do nothing */ },
             onLoading = {

@@ -5,7 +5,7 @@ import com.venture.core.domain.results.DataError
 import com.venture.core.domain.results.ResultResponse
 import com.venture.network.model.DateRange
 import com.venture.network.services.GitHubApi
-import com.venture.trend_repos.domain.mappers.RepoEntityToRepoMapper
+import com.venture.trend_repos.domain.mappers.RepoDTORepoMapper
 import com.venture.trend_repos.domain.model.Repo
 import com.venture.trend_repos.domain.repos.SearchRepository
 import kotlinx.coroutines.flow.Flow
@@ -14,7 +14,7 @@ import retrofit2.HttpException
 
 class SearchRepositoryImpl(
     private val api: GitHubApi,
-    private val repoMapper: RepoEntityToRepoMapper
+    private val repoMapper: RepoDTORepoMapper
 ) : SearchRepository {
     override suspend fun getTrendingRepos(
         language: String,

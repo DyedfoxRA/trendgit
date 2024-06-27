@@ -4,7 +4,7 @@ import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
 @Serializable
-data class LicenseEntity(
+data class LicenseDTO(
     @SerialName("key") val key: String,
     @SerialName("name") val name: String,
     @SerialName("spdx_id") val spdxId: String,

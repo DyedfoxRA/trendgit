@@ -4,13 +4,13 @@ import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
 @Serializable
-data class RepoEntity(
+data class RepoDTO(
     @SerialName("id") val id: Long,
     @SerialName("node_id") val nodeId: String,
     @SerialName("name") val name: String,
     @SerialName("full_name") val fullName: String,
     @SerialName("private") val private: Boolean,
-    @SerialName("owner") val ownerEntity: OwnerEntity,
+    @SerialName("owner") val ownerDTO: OwnerDTO,
     @SerialName("html_url") val htmlUrl: String,
     @SerialName("description") val description: String?,
     @SerialName("fork") val fork: Boolean,
@@ -74,7 +74,7 @@ data class RepoEntity(
     @SerialName("archived") val archived: Boolean,
     @SerialName("disabled") val disabled: Boolean,
     @SerialName("open_issues_count") val openIssuesCount: Int,
-    @SerialName("license") val licenseEntity: LicenseEntity?,
+    @SerialName("license") val licenseDTO: LicenseDTO?,
     @SerialName("allow_forking") val allowForking: Boolean,
     @SerialName("is_template") val isTemplate: Boolean,
     @SerialName("web_commit_signoff_required") val webCommitSignoffRequired: Boolean,

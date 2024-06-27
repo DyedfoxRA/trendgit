@@ -4,7 +4,7 @@ import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
 @Serializable
-data class OwnerEntity(
+data class OwnerDTO(
     @SerialName("login") val login: String,
     @SerialName("id") val id: Long,
     @SerialName("node_id") val nodeId: String,
