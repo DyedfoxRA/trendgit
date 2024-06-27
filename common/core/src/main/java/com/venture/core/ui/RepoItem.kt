@@ -53,7 +53,10 @@ fun RepoItem(
             .fillMaxWidth()
             .padding(vertical = 8.dp)
             .clickable { onClick(repo) }
-            .background(color = Color.White, shape = RoundedCornerShape(8.dp))
+            .background(
+                color = Color.White,
+                shape = RoundedCornerShape(8.dp)
+            )
             .padding(16.dp)
     ) {
         Row(

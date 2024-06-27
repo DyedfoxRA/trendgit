@@ -13,7 +13,6 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
-import androidx.compose.material3.Button
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.DropdownMenu
 import androidx.compose.material3.DropdownMenuItem
@@ -29,13 +28,9 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.input.ImeAction
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import com.venture.core.domain.model.Repo
-import com.venture.core.domain.results.BaseError
-import com.venture.core.domain.results.DataError
-import com.venture.core.domain.results.ResultResponse
+import androidx.navigation.NavController
 import com.venture.core.ui.DisplayResult
 import com.venture.core.ui.EmptyState
 import com.venture.core.ui.ErrorState
@@ -45,12 +40,15 @@ import com.venture.network.model.DateRange
 import org.koin.androidx.compose.koinViewModel
 
 @Composable
-fun TrendReposScreen(viewModel: TrendReposViewModel = koinViewModel()) {
+fun TrendReposScreen(
+    navController: NavController,
+    viewModel: TrendReposViewModel = koinViewModel()
+) {
     val reposState by viewModel.trendingRepos.collectAsStateWithLifecycle()
 
-    val favViewModel : FavoriteReposViewModel = koinViewModel()
+    val favViewModel: FavoriteReposViewModel = koinViewModel()
 
-    val favoriteReposState  = favViewModel.favRepos.collectAsStateWithLifecycle()
+    val favoriteReposState = favViewModel.favRepos.collectAsStateWithLifecycle()
 
     val language by viewModel.language.collectAsStateWithLifecycle()
     val dateRange by viewModel.dateRange.collectAsStateWithLifecycle()
@@ -129,7 +127,7 @@ fun TrendReposScreen(viewModel: TrendReposViewModel = koinViewModel()) {
                             RepoItem(
                                 repo = repo,
                                 isFavorite = isFavorite,
-                                onClick = { /* Handle repo click */ },
+                                onClick = { navController.navigate("repoDetails/${repo.id}/${repo.name}/${repo.owner.login}") },
                                 onAddFavorite = { favViewModel.addFavoriteRepo(repo) },
                                 onRemoveFavorite = { favViewModel.removeFavoriteRepo(repo) }
                             )
@@ -146,10 +144,4 @@ fun TrendReposScreen(viewModel: TrendReposViewModel = koinViewModel()) {
             }
         )
     }
-}
-
-@Preview(showBackground = true)
-@Composable
-fun TrendReposScreenPreview() {
-    TrendReposScreen()
 }
