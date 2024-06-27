@@ -41,6 +41,10 @@ android {
             excludes += "/META-INF/{AL2.0,LGPL2.1}"
         }
     }
+
+}
+tasks.withType<Test> {
+    useJUnitPlatform()
 }
 
 dependencies {
@@ -68,6 +72,11 @@ dependencies {
     implementation(project(":features:favorite_repos"))
 
     testImplementation(libs.junit)
+    testImplementation(libs.junit.jupiter)
+    testImplementation(libs.kotlinx.coroutines.test)
+    testImplementation (libs.mockk)
+    testImplementation(libs.jetbrains.kotlin.test.junit5)
+    testRuntimeOnly (libs.junit.jupiter.engine)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
 }
