@@ -21,4 +21,9 @@ dependencyResolutionManagement {
 
 rootProject.name = "trendgit"
 include(":app")
- 
+include(":common:network")
+include(":features:settings")
+include(":features:trend_repos")
+include(":features:favorite_repos")
+include(":common:data")
+include(":common:core")
