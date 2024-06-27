@@ -1,4 +1,4 @@
-package com.venture.trend_repos.ui
+package com.venture.core.ui
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
@@ -15,7 +15,6 @@ import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Favorite
 import androidx.compose.material.icons.filled.Share
 import androidx.compose.material.icons.filled.Star
 import androidx.compose.material3.Icon
@@ -25,18 +24,14 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.painter.Painter
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.layout.ContentScale
-import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import coil.compose.rememberAsyncImagePainter
-import coil.compose.rememberImagePainter
-import com.venture.trend_repos.R
-import com.venture.trend_repos.domain.model.Owner
-import com.venture.trend_repos.domain.model.Repo
+import com.venture.core.domain.model.Owner
+import com.venture.core.domain.model.Repo
 
 @Composable
 fun RepoItem(repo: Repo, onClick: (Repo) -> Unit) {
@@ -71,7 +66,7 @@ fun RepoItem(repo: Repo, onClick: (Repo) -> Unit) {
             Spacer(modifier = Modifier.width(8.dp))
             IconWithText(icon = Icons.Default.Share, text = "${repo.forksCount}")
             Spacer(modifier = Modifier.width(8.dp))
-            Contributors(avatars = listOf(repo.owner.avatarUrl)) // Assuming you have a list of avatar URLs
+            Contributors(avatars = listOf(repo.owner.avatarUrl))
         }
         Row(
             modifier = Modifier.padding(top = 8.dp),

@@ -1,6 +1,7 @@
 package com.venture.favorite_repos.domain
 
-import com.venture.trend_repos.domain.model.Repo
+import com.venture.core.domain.model.Repo
+
 
 interface FavoriteRepository {
 

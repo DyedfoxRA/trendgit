@@ -65,6 +65,7 @@ dependencies {
 
     implementation(project(":common:network"))
     implementation(project(":common:core"))
+    implementation(project(":features:favorite_repos"))
 
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)

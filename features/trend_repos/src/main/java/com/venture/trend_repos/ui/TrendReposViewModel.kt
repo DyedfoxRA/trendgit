@@ -6,7 +6,7 @@ import androidx.lifecycle.viewModelScope
 import com.venture.core.domain.results.BaseError
 import com.venture.core.domain.results.ResultResponse
 import com.venture.network.model.DateRange
-import com.venture.trend_repos.domain.model.Repo
+import com.venture.core.domain.model.Repo
 import com.venture.trend_repos.domain.repos.SearchRepository
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow

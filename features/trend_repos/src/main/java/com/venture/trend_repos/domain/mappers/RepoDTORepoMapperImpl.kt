@@ -1,8 +1,9 @@
 package com.venture.trend_repos.domain.mappers
 
+import com.venture.core.domain.mapper.Mapper
 import com.venture.network.model.RepoDTO
-import com.venture.trend_repos.domain.model.Owner
-import com.venture.trend_repos.domain.model.Repo
+import com.venture.core.domain.model.Owner
+import com.venture.core.domain.model.Repo
 
 class RepoDTORepoMapperImpl : RepoDTORepoMapper {
     override fun map(raw: RepoDTO): Repo {

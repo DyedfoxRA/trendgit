@@ -10,7 +10,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import com.venture.trend_repos.ui.RepoItem
+import com.venture.core.ui.RepoItem
 import org.koin.androidx.compose.koinViewModel
 
 @Composable
@@ -30,7 +30,7 @@ fun FavoriteReposScreen(viewModel: FavoriteReposViewModel = koinViewModel()) {
         } else {
             LazyColumn {
                 items(favoriteRepos.size) { index ->
-                    RepoItem(repo = favoriteRepos[index]) {
+                    com.venture.core.ui.RepoItem(repo = favoriteRepos[index]) {
                         viewModel.removeFavoriteRepo(favoriteRepos[index])
                     }
                 }

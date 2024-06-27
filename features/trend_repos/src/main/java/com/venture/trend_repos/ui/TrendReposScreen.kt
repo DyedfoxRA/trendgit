@@ -35,12 +35,17 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.venture.core.domain.results.BaseError
 import com.venture.core.domain.results.DataError
 import com.venture.core.ui.DisplayResult
+import com.venture.core.ui.RepoItem
+import com.venture.favorite_repos.ui.FavoriteReposViewModel
 import com.venture.network.model.DateRange
 import org.koin.androidx.compose.koinViewModel
 
 @Composable
 fun TrendReposScreen(viewModel: TrendReposViewModel = koinViewModel()) {
     val reposState by viewModel.trendingRepos.collectAsStateWithLifecycle()
+
+    val favViewModel : FavoriteReposViewModel = koinViewModel()
+
     val language by viewModel.language.collectAsStateWithLifecycle()
     val dateRange by viewModel.dateRange.collectAsStateWithLifecycle()
     var expanded by remember { mutableStateOf(false) }

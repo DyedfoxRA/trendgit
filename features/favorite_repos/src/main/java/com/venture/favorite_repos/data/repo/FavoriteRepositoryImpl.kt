@@ -1,10 +1,10 @@
 package com.venture.favorite_repos.data.repo
 
+import com.venture.core.domain.model.Repo
 import com.venture.favorite_repos.data.RepoDao
 import com.venture.favorite_repos.domain.FavoriteRepository
 import com.venture.favorite_repos.domain.mapper.RepoEntityToRepoMapper
 import com.venture.favorite_repos.domain.mapper.RepoToRepoEntityMapper
-import com.venture.trend_repos.domain.model.Repo
 
 class FavoriteRepositoryImpl(
     private val repoDao: RepoDao,

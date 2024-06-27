@@ -1,4 +1,4 @@
-package com.venture.trend_repos.domain.model
+package com.venture.core.domain.model
 
 data class Owner(
     val login: String,

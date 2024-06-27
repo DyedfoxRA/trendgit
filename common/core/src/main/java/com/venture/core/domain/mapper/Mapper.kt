@@ -1,4 +1,4 @@
-package com.venture.trend_repos.domain.mappers
+package com.venture.core.domain.mapper
 
 interface Mapper<From, To> {
     fun map(raw: From): To

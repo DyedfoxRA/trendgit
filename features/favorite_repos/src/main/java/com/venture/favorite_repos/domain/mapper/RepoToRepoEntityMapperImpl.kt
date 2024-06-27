@@ -2,11 +2,11 @@ package com.venture.favorite_repos.domain.mapper
 
 import com.venture.favorite_repos.data.model.OwnerEntity
 import com.venture.favorite_repos.data.model.RepoEntity
-import com.venture.trend_repos.domain.mappers.Mapper
-import com.venture.trend_repos.domain.model.Repo
+import com.venture.core.domain.mapper.Mapper
+import com.venture.core.domain.results.model.Repo
 
 class RepoToRepoEntityMapperImpl : RepoToRepoEntityMapper {
-    override fun map(raw: Repo): RepoEntity {
+    override fun map(raw: com.venture.core.domain.results.model.Repo): RepoEntity {
         return RepoEntity(
             id = raw.id,
             name = raw.name,
@@ -24,4 +24,5 @@ class RepoToRepoEntityMapperImpl : RepoToRepoEntityMapper {
     }
 }
 
-interface RepoToRepoEntityMapper : Mapper<Repo, RepoEntity>
+interface RepoToRepoEntityMapper :
+    com.venture.core.domain.mapper.Mapper<com.venture.core.domain.results.model.Repo, RepoEntity>
