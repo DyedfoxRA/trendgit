@@ -32,9 +32,13 @@ import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import com.venture.core.domain.model.Repo
 import com.venture.core.domain.results.BaseError
 import com.venture.core.domain.results.DataError
+import com.venture.core.domain.results.ResultResponse
 import com.venture.core.ui.DisplayResult
+import com.venture.core.ui.EmptyState
+import com.venture.core.ui.ErrorState
 import com.venture.core.ui.RepoItem
 import com.venture.favorite_repos.ui.FavoriteReposViewModel
 import com.venture.network.model.DateRange
@@ -45,6 +49,8 @@ fun TrendReposScreen(viewModel: TrendReposViewModel = koinViewModel()) {
     val reposState by viewModel.trendingRepos.collectAsStateWithLifecycle()
 
     val favViewModel : FavoriteReposViewModel = koinViewModel()
+
+    val favoriteReposState  = favViewModel.favRepos.collectAsStateWithLifecycle()
 
     val language by viewModel.language.collectAsStateWithLifecycle()
     val dateRange by viewModel.dateRange.collectAsStateWithLifecycle()
@@ -114,58 +120,31 @@ fun TrendReposScreen(viewModel: TrendReposViewModel = koinViewModel()) {
             },
             onSuccess = { repos ->
                 if (repos.isEmpty()) {
-                    EmptyState()
+                    EmptyState(message = "No repositories found")
                 } else {
                     LazyColumn {
                         items(repos.size) { index ->
-                            RepoItem(repo = repos[index]) {
-                                // Handle repo item click
-                            }
+                            val repo = repos[index]
+                            val isFavorite = favoriteReposState.value.contains(repo)
+                            RepoItem(
+                                repo = repo,
+                                isFavorite = isFavorite,
+                                onClick = { /* Handle repo click */ },
+                                onAddFavorite = { favViewModel.addFavoriteRepo(repo) },
+                                onRemoveFavorite = { favViewModel.removeFavoriteRepo(repo) }
+                            )
                         }
                     }
                 }
             },
             onError = { error ->
-                ErrorState(error, viewModel)
+                ErrorState(
+                    error = error,
+                    onRetry = { viewModel.fetchTrendingRepos() },
+                    onBack = null
+                )
             }
         )
-    }
-}
-
-@Composable
-fun EmptyState() {
-    Column(
-        modifier = Modifier.fillMaxSize(),
-        verticalArrangement = Arrangement.Center,
-        horizontalAlignment = Alignment.CenterHorizontally
-    ) {
-        Text(text = "No repositories found")
-    }
-}
-
-@Composable
-fun ErrorState(error: BaseError?, viewModel: TrendReposViewModel) {
-    Column(
-        modifier = Modifier.fillMaxSize(),
-        verticalArrangement = Arrangement.Center,
-        horizontalAlignment = Alignment.CenterHorizontally
-    ) {
-        Text(
-            text = "Error: ${error?.javaClass?.simpleName}",
-            color = MaterialTheme.colorScheme.error
-        )
-        Spacer(modifier = Modifier.height(16.dp))
-        if (error is DataError.Network) {
-            Button(onClick = {
-                viewModel.fetchTrendingRepos()
-            }) {
-                Text(text = "Retry")
-            }
-        } else {
-            Button(onClick = { /* add logic */ }) {
-                Text(text = "Back")
-            }
-        }
     }
 }
 

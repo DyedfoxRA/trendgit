@@ -15,12 +15,17 @@ import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Favorite
+import androidx.compose.material.icons.filled.FavoriteBorder
 import androidx.compose.material.icons.filled.Share
 import androidx.compose.material.icons.filled.Star
 import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -34,7 +39,15 @@ import com.venture.core.domain.model.Owner
 import com.venture.core.domain.model.Repo
 
 @Composable
-fun RepoItem(repo: Repo, onClick: (Repo) -> Unit) {
+fun RepoItem(
+    repo: Repo,
+    isFavorite: Boolean,
+    onClick: (Repo) -> Unit,
+    onAddFavorite: (Repo) -> Unit,
+    onRemoveFavorite: (Repo) -> Unit
+) {
+    val favoriteState = remember { mutableStateOf(isFavorite) }
+
     Column(
         modifier = Modifier
             .fillMaxWidth()
@@ -43,11 +56,31 @@ fun RepoItem(repo: Repo, onClick: (Repo) -> Unit) {
             .background(color = Color.White, shape = RoundedCornerShape(8.dp))
             .padding(16.dp)
     ) {
-        Text(
-            text = repo.fullName,
-            style = MaterialTheme.typography.bodyLarge.copy(fontWeight = FontWeight.Bold),
-            color = Color.Blue
-        )
+        Row(
+            horizontalArrangement = Arrangement.SpaceBetween,
+            verticalAlignment = Alignment.CenterVertically,
+            modifier = Modifier.fillMaxWidth()
+        ) {
+            Text(
+                text = repo.fullName,
+                style = MaterialTheme.typography.bodyLarge.copy(fontWeight = FontWeight.Bold),
+                color = Color.Blue
+            )
+            IconButton(onClick = {
+                if (favoriteState.value) {
+                    onRemoveFavorite(repo)
+                } else {
+                    onAddFavorite(repo)
+                }
+                favoriteState.value = !favoriteState.value
+            }) {
+                Icon(
+                    imageVector = if (favoriteState.value) Icons.Filled.Favorite else Icons.Filled.FavoriteBorder,
+                    contentDescription = null,
+                    tint = Color.Red
+                )
+            }
+        }
         repo.description?.let {
             Text(
                 text = it,
@@ -74,7 +107,9 @@ fun RepoItem(repo: Repo, onClick: (Repo) -> Unit) {
             Image(
                 painter = rememberAsyncImagePainter(model = repo.owner.avatarUrl),
                 contentDescription = null,
-                modifier = Modifier.size(24.dp).background(Color.Gray, CircleShape),
+                modifier = Modifier
+                    .size(24.dp)
+                    .background(Color.Gray, CircleShape),
                 contentScale = ContentScale.Crop
             )
             Spacer(modifier = Modifier.width(8.dp))
@@ -131,15 +166,21 @@ fun Contributors(avatars: List<String>) {
 @Preview(showBackground = true)
 @Composable
 fun RepoItemPreview() {
-    RepoItem(repo = Repo(
-        id = 1,
-        name = "sample",
-        fullName = "sample/repo",
-        description = "This is a sample repository",
-        htmlUrl = "https://github.com/sample/repo",
-        stargazersCount = 2134,
-        language = "Kotlin",
-        owner = Owner("sampleOwner", "https://avatars.githubusercontent.com/u/1?v=4"),
-        forksCount = 192
-    ), onClick = {})
+    RepoItem(
+        repo = Repo(
+            id = 1,
+            name = "sample",
+            fullName = "sample/repo",
+            description = "This is a sample repository",
+            htmlUrl = "https://github.com/sample/repo",
+            stargazersCount = 2134,
+            language = "Kotlin",
+            owner = Owner("sampleOwner", "https://avatars.githubusercontent.com/u/1?v=4"),
+            forksCount = 192
+        ),
+        isFavorite = true,
+        onClick = {},
+        onAddFavorite = {},
+        onRemoveFavorite = {}
+    )
 }

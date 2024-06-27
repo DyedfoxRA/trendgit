@@ -54,10 +54,12 @@ dependencies {
     implementation(libs.androidx.ui.graphics)
     implementation(libs.androidx.ui.tooling.preview)
     implementation(libs.androidx.material3)
-    implementation(project(":common:core"))
+    implementation(libs.androidx.lifecycle.runtime.compose.android)
 
     ksp(libs.androidx.room.compiler)
     implementation(libs.androidx.room.ktx)
+
+    implementation(project(":common:core"))
 
     implementation(libs.koin.core)
     implementation(libs.koin.android)

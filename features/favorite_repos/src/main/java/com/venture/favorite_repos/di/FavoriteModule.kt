@@ -24,5 +24,5 @@ val favoriteModule = module {
     single<FavoriteRepository> { FavoriteRepositoryImpl(get(), get(), get()) }
     single<RepoEntityToRepoMapper> { RepoEntityToRepoMapperImpl() }
     single<RepoToRepoEntityMapper> { RepoToRepoEntityMapperImpl() }
-    viewModel { FavoriteReposViewModel(get()) }
+    single { FavoriteReposViewModel(get()) }
 }
